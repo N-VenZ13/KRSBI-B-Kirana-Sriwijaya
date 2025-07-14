@@ -6,12 +6,6 @@
 
 void ModaNew(){
 
-    Serial.print("Langkah: "); Serial.println(langkah);
-  Serial.print("X: "); Serial.print(X);
-  Serial.print("  Y: "); Serial.print(Y);
-  Serial.print("  Sudut: "); Serial.println(sudut);
-
-
   pid_kompas();
   sharpgp();
   bkirifix();
@@ -52,7 +46,7 @@ void ModaNew(){
 
     case 1:
       Serial.println("Langkah 1: Menuju titik (0,10)");
-      go_to(0, 0, 7, 50);
+      go_to(0, 0, 3, 50);
       if (nyampe) {
         motor(0, 0, 0);
         delay(300);  // delay singkat untuk memastikan berhenti

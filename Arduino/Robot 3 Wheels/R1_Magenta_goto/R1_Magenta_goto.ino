@@ -63,8 +63,8 @@ void update_data(){
 
 void setup() {
   // Serial.begin(500000);  //untuk komunikasi dengan python
-  // Serial.begin(115200);   //Deklarasi Serial Monitor dan mengatur nilai baud
-  Serial.begin(9600); 
+  Serial.begin(115200);   //Deklarasi Serial Monitor dan mengatur nilai baud
+  // Serial.begin(9600); 
   // Serial3.begin(9600);  // kompass
   // s.begin(115200);      //Deklarasi untuk komunikasi Software Serial
 
@@ -138,7 +138,7 @@ void loop() {
   // s.print("k");
   // kompas();
   // logic_cmps = 1;
-  UpdatePosisi();
+  // UpdatePosisi();
   // Serial.print("S = ");
   // Serial.print(sudut);
   // Serial.print("||");
@@ -214,11 +214,8 @@ void loop() {
   // // === MODE KOMUNIKASI ===
   komunikasi();
   if (moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
-    Serial.println("moda masuk");
-    // Moda1();
-  // Serial.println("moda blum masuk");
-  // Moda1();
-  ModaNew();
+    // Serial.println("moda masuk");
+    Moda1();
   }
   else if (!moda1 && moda2 && !moda3 && !moda4 && !moda5) {
     Moda2();

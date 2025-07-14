@@ -42,7 +42,7 @@ void tangkapBolaOmni(int knt) {
   setPoint_k = knt;
   pid_kompas();
   if (x >= 760 && x <= 900) {   // kiri
-    spid = 50;
+    spid = 60;
     arah = 90;
     omni1(arah, pwm_k, spid);
   }
@@ -53,7 +53,7 @@ void tangkapBolaOmni(int knt) {
     omni1(arah, pwm_k, spid);
   }
   else if (x >= 550 && x < 715) { // kanan
-    spid = 50; 
+    spid = 60; 
     arah = 270;
     omni1(arah, pwm_k, spid);
   }

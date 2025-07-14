@@ -150,7 +150,7 @@ void deklarasi_kick() {
 
 //Deklarasi PIN Data MOTOR PG45
 //======== Left =========
-#define pin_MOTOR_DIRL 10 //JANGAN DIBALEK LAGI, INSYAALLAH LAH BENER UNTUK 2025
+#define pin_MOTOR_DIRL 10 //JANGAN DIBALEK LAGI, INSYAALLAH LAH BENER UNTUK 2024
 #define pin_MOTOR_PWML 11
 //======== Right =========
 #define pin_MOTOR_DIRR 8   
@@ -184,15 +184,15 @@ bool dapetBola;
 bool bkiri;
 bool bkanan;
 
-  //Program logika sharp membuat kondisi dapet bola atau tidak dapat bola
-  void sharpgp() {
-    if (sgp > 500 && sgp < 700) {
-      dapetBola = true;
-    }
-      else {
-      dapetBola = false;
-    }
+//Program logika sharp membuat kondisi dapet bola atau tidak dapat bola
+void sharpgp() {
+  if (sgp > 500 && sgp < 700) {
+    dapetBola = true;
   }
+    else {
+    dapetBola = false;
+  }
+}
 
 void bkirifix() {
   if (bahukiri > 450 && sgp < 700) {

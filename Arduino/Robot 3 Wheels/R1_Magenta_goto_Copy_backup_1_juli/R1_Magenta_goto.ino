@@ -15,7 +15,7 @@ void posisi() {  // PROGRAM Buatan Posisi berfungsi untuk menentukan nilai jarak
   float sudutv = 45 * PI / 180;
   float sudutw = 135 * PI / 180;
 
-  Xv = (leftCountx * cos(sudutv) + leftCounty * cos(sudutw)) * 0.00261;  //cubo ilngi min
+  Xv = -(leftCountx * cos(sudutv) + leftCounty * cos(sudutw)) * 0.00261;  
   Yv = (leftCountx * cos(sudutv) + leftCounty * sin(sudutw)) * 0.00261;
 
   float sudut1 = sudut * PI / 180;
@@ -31,7 +31,6 @@ void posisi() {  // PROGRAM Buatan Posisi berfungsi untuk menentukan nilai jarak
 
   X = X + Xx + Xy;  //Nilai posisi di update setiap interval milis
   Y = Y + Yx + Yy;
-  
   //  Xc = X / 10;
   //  Yc = Y / 10;
 
@@ -47,31 +46,36 @@ void update_data(){
   dribble_on1();
   dribble_on2();
   sharpgp();
-  lcd.setCursor(0, 0); lcd.print("S = ");
-  lcd.setCursor(3, 0); lcd.print(sudut); lcd.print("   ");
-  lcd.setCursor(0, 3); lcd.print("X = ");
-  lcd.setCursor(3, 3); lcd.print(X); lcd.print("   ");
-  lcd.setCursor(0, 2); lcd.print("Y = ");
-  lcd.setCursor(3, 2); lcd.print(Y); lcd.print("   ");
-  lcd.setCursor(12, 2); lcd.print(nyampe); lcd.print("   ");
-  lcd.setCursor(16, 2); lcd.print(step); lcd.print("   ");
-  lcd.setCursor(14, 2); lcd.print(dapetBola); lcd.print("   ");
+  bkirifix();
+  bkananfix();
+  // lcd.setCursor(0, 0); lcd.print("S = ");
+  // lcd.setCursor(3, 0); lcd.print(sudut); lcd.print("   ");
+  // lcd.setCursor(0, 1); lcd.print("X = ");
+  // lcd.setCursor(3, 1); lcd.print(X); lcd.print("   ");
+  // lcd.setCursor(0, 2); lcd.print("Y = ");
+  // lcd.setCursor(3, 2); lcd.print(Y); lcd.print("   ");
+  // lcd.setCursor(12, 1); lcd.print(nyampe); lcd.print("   ");
+  // lcd.setCursor(12, 2); lcd.print(step); lcd.print("   ");
+  // lcd.setCursor(14, 1); lcd.print(dapetBola); lcd.print("   ");
 }
+
+
 
 void setup() {
   // Serial.begin(500000);  //untuk komunikasi dengan python
-  Serial.begin(9600);   //Deklarasi Serial Monitor dan mengatur nilai baud
-  Serial3.begin(9600);  // kompass
+  // Serial.begin(115200);   //Deklarasi Serial Monitor dan mengatur nilai baud
+  Serial.begin(9600); 
+  // Serial3.begin(9600);  // kompass
   // s.begin(115200);      //Deklarasi untuk komunikasi Software Serial
 
   Wire.begin();  //Deklarasi Kompas CMPS12
-  // lcd.init();       // || Deklarasi LCD i2C
+  lcd.init();       // || Deklarasi LCD i2C
   lcd.backlight();  // ||
 
   deklarasi_pg45();  // Deklarasi Buatan untuk PIN Data Motor Pg45
   deklarasi_dribble();  // Deklarasi Buatan untuk PIN Data Motor Drible
   // deklarasi_tombol();  // Deklarasi Buatan untuk PIN Data Tombol
-  // deklarasi_kick();   // Deklarasi Buatan untuk PIN Data Penendang
+  deklarasi_kick();   // Deklarasi Buatan untuk PIN Data Penendang
   inisial_encoder();  // Deklarasi Buatan PIN Data Untuk Rotary Encoder
 
   inputString.reserve(200);
@@ -80,11 +84,6 @@ void setup() {
   // homescreen();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           //Program Buatan Tombol (alasan Program tombol di letakan di void setup karena program berjalan terlebih dahulu sebelum program laen berjalan di void loop )
 }
 
-//deklarasi untuk millis void komunikasi, cobo tarok sini dulu tp lebih bagus men dipindahi di Deklarasi.h
-unsigned long previousMillis = 0; //encoder
-unsigned long previousMillisKomunikasi = 0;
-const unsigned long intervalKomunikasi = 100;
-
 void loop() {
   //===========================================//
   //==== TESTING POSISI ====
@@ -92,7 +91,7 @@ void loop() {
   // step = 1;
   // while (nyampe == false) {
   //   update_data();
-  //   go_to(0, 0, 5, 100);
+  //   go_to(77, X, Y, 50);
   // }
   // motor(0, 0, 0);
   // delay(1000);
@@ -101,7 +100,7 @@ void loop() {
   // step = 2;
   // while (nyampe == false) {
   //   update_data();
-  //   go_to(75, X, Y, 0);
+  //   go_to(0, X, Y, 50);
   // }
   // motor(0, 0, 0);
   // delay(1000000);
@@ -114,50 +113,52 @@ void loop() {
   // delay(100000);
 
   // === CODING EDOPI DRIBBLE ===
+  
+  //  Serial.print("Serial jalan");
   //  dribble_on1();
   //  dribble_on2();
 
- // === CODING CEK OMNI ===   //untuk motor dan kompas
+  // === CODING CEK OMNI ===   //untuk motor dan kompas
   // omni(0,0,100);   //program maju
   // delay(2000);
-  // omni(180,0,80); //program mundur
+  // omni(180,0,100); //program mundur
   // delay(2000);
-  // omni (90,0,80); //program ke kiri
+  // omni (90,0,100); //program ke kiri
   // delay(2000);
-  // omni (270,0,80); //program ke kanan
+  // omni (270,0,100); //program ke kanan
   // delay(2000);
 
   // === CODING CEK MOTOR ===
   // motor(50, 50, 50);    //motor muter kanan
-  // delay(3000);
+  // delay(2000);
   // motor(-50, -50, -50); //motor muter kiri
-  // delay(3000);
+  // delay(2000);
 
   // === CODING CEK KOMPAS DAN X Y ===
   // s.print("k");
   // kompas();
   // logic_cmps = 1;
-  // UpdatePosisi();
+  UpdatePosisi();
   // Serial.print("S = ");
   // Serial.print(sudut);
   // Serial.print("||");
   // Serial.print("X = ");
-  // Serial.print(X, 6);
+  // Serial.print(X);
   // Serial.print("||");
   // Serial.print("Y = ");
-  // Serial.println(Y, 6);
+  // Serial.println(Y);
   // delay(50);  //supaya nilainyo dk kecepetan di serial monitor jadi dikasih delay
 
-  // // === CODING CEK TAMPILAN LCD ===
-  //  lcd.setCursor(0, 3); lcd.print("D = ");
-  //  lcd.setCursor(5, 3); lcd.print(d); lcd.print("   ");
+  // === CODING CEK TAMPILAN LCD ===
+  //  lcd.setCursor(0, 0); lcd.print("D = ");
+  //  lcd.setCursor(5, 0); lcd.print(d); lcd.print("   ");
   //  lcd.setCursor(0, 0); lcd.print("X = ");
   //  lcd.setCursor(5, 0); lcd.print(X); lcd.print("   ");
   //  lcd.setCursor(0, 2); lcd.print("Y = ");
   //  lcd.setCursor(5, 2); lcd.print(Y); lcd.print("   ");
 
   // === CODING EDOPI SELENOID ===
-  // kickON();
+  // kickON();            //men nak aman makai sharpGp bae, kodingannyo ado di ModaM
   // delay(2000);
   // operON();
 
@@ -165,16 +166,30 @@ void loop() {
   // lcd.setCursor(0, 0); lcd.print("S = ");
   //  lcd.setCursor(5, 0); lcd.print(sgp); lcd.print("   ");
   //  Serial.print("S = ");
-  //  Serial.print(sgp);
+  //  Serial.println(sgp);
+  //  Serial.print("||");
   //  Serial.print("BKI = ");
   //  Serial.print(bahukiri);
   //  Serial.print("||");
   //  Serial.print("BKN = ");
   //  Serial.println(bahukanan);
+  //  delay(50);
 
   // === CODING BACA KAMERA PYTHON ===
-  //  baca_kamera();
-  //  kejar_bola();
+  //  UpdatePosisi();
+  // //  serialEvent();
+  // //  baca_kamera();
+  //  kejar_bola_omni();
+  //  kejar_bola_omni_depan();   //best
+  // tangkapBolaOmni(0);   //bestt
+  // tangkapBolaOmniDekat(0);
+  // dapetBola == false;
+  // if (dapetBola == true){
+  //   motor(0, 0, 0);
+  //   delay(10000000);
+  // }
+
+  // tangkapBolaModa2(0);
   //
   //  bkirifix();
   //    bkananfix();
@@ -193,28 +208,32 @@ void loop() {
   //  Serial.println(leftCounty);
   //  delay(1000);
 
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillisKomunikasi >= intervalKomunikasi) { // Eksekusi komunikasi setiap intervalKomunikasi milidetik
-    previousMillisKomunikasi = currentMillis;
+  // unsigned long currentMillis = millis();
+  // if (currentMillis - previousMillisKomunikasi >= intervalKomunikasi) { // Eksekusi komunikasi setiap intervalKomunikasi milidetik
+  //   previousMillisKomunikasi = currentMillis;
   // // === MODE KOMUNIKASI ===
-  // // komunikasi();
-  // // if (moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
+  komunikasi();
+  if (moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
+    Serial.println("moda masuk");
+    // Moda1();
+  // Serial.println("moda blum masuk");
   // Moda1();
-  // // }
-  // // else if (!moda1 && moda2 && !moda3 && !moda4 && !moda5) {
-    // Moda2();
-  // // }
-  // // else if (!moda1 && !moda2 && moda3 && !moda4 && !moda5) {
-    // Moda3();
-  // // }
-  // // else if (!moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
-  // //   Moda4();
-  // // }
-  // // else if (!moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
-    // Moda5();
-  // // }
-  // }
+  ModaNew();
   }
+  else if (!moda1 && moda2 && !moda3 && !moda4 && !moda5) {
+    Moda2();
+  }
+  // else if (!moda1 && !moda2 && moda3 && !moda4 && !moda5) {
+  //   Moda3();
+  // }
+  // else if (!moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
+  //   Moda4();
+  // }
+  // else if (!moda1 && !moda2 && !moda3 && !moda4 && !moda5) {
+  //   Moda5();
+  // }
+  //  }
+
   //==========================================//
   //  if (!back) {
   //    homescreen();
@@ -222,46 +241,99 @@ void loop() {
 }
 
 
-void serialEvent() {  //Program Untuk Membaca data python dari komunikasi serial
+// void serialEvent() {  //Program Untuk Membaca data python dari komunikasi serial
+//   while (Serial.available()) {
+//     inChar = (char)Serial.read();
+//     inputString += inChar;
+//     d.indexOf('>');
+
+//     if (inChar == 'x') {  // Membaca Data x frame kamera dari python
+//       x = inputString.toInt();
+//       if (x >= 500) {
+//         belok = 1;
+//       } else if (x <= 100 && x > 0) {
+//         belok = 0;
+//       }
+//       inputString = "";
+//     }
+
+//     else if (inChar == 'y') {  // Membaca Data y frame kamera dari python
+//       y = inputString.toInt();
+//       inputString = "";
+//     } else if (inChar == '>') {  // Membaca Data basestation dari python
+//       d = inputString;
+//       inputString = "";
+//     }
+//     //    else if (inChar == 'v') {
+//     //      v = inputString.toInt();
+//     //      inputString = "";
+//     //    }
+//     //    else if (inChar == 'w') {
+//     //      w = inputString.toInt();
+//     //      inputString = "";
+//     //      stringComplete = true;
+//     //    }
+//   }
+// }
+
+
+//  serial event baru-baru  
+//  inibener untuk baca program x dan y kamera
+void serialEvent() {
   while (Serial.available()) {
-    inChar = (char)Serial.read();
+    char inChar = (char)Serial.read();
     inputString += inChar;
-    d.indexOf('>');
+    // Serial.print("data basestation = "); Serial.println(inChar);
 
-    if (inChar == 'x') {  // Membaca Data x frame kamera dari python
-      x = inputString.toInt();
-      if (x >= 500) {
-        belok = 1;
-      } else if (x <= 100 && x > 0) {
-        belok = 0;
+    if (inChar == '>') {
+      // Cek apakah formatnya benar
+      int xIndex = inputString.indexOf('x');
+      int yIndex = inputString.indexOf('y');
+      int endIndex = inputString.indexOf('>');
+
+      if (xIndex != -1 && yIndex != -1 && endIndex != -1 && yIndex > xIndex) {
+        int xVal = inputString.substring(xIndex + 1, yIndex).toInt();
+        int yVal = inputString.substring(yIndex + 1, endIndex).toInt();
+
+        // Serial.print("[Arduino] Diterima x: ");
+        // Serial.print(xVal);
+        // Serial.print(", y: ");
+        // Serial.println(yVal);
+        // Serial.print("data basestation = "); Serial.println(inChar);
+
+        x = xVal;
+        y = yVal;
+
+        if (x == 0 && y == 0) {
+          bola_terdeteksi = false;
+        } else {
+          bola_terdeteksi = true;
+          Serial.println("[Arduino] ==> Bola Terdeteksi!");
+        }
+      } else {
+        // === Format perintah: M1>, m2>, dsb
+        d = inputString;  // Simpan ke variabel d
+        // komunikasi();     // Panggil logika mode
       }
-      inputString = "";
-    }
 
-    else if (inChar == 'y') {  // Membaca Data y frame kamera dari python
-      y = inputString.toInt();
-      inputString = "";
-    } else if (inChar == '>') {  // Membaca Data basestation dari python
-      d = inputString;
+      // Reset input string
       inputString = "";
     }
-    //    else if (inChar == 'v') {
-    //      v = inputString.toInt();
-    //      inputString = "";
-    //    }
-    //    else if (inChar == 'w') {
-    //      w = inputString.toInt();
-    //      inputString = "";
-    //      stringComplete = true;
-    //    }
   }
 }
+
+
+
 
 void UpdatePosisi() {  // Program milis untuk program posisi agar program lain berjalan bersamaan program lainnya (https://mr-leong.com/apa-itu-milis-pada-arduino-dan-cara-penggunaanya/)
   unsigned long currentMillis = millis();
   // unsigned long previousMillis; //uji gpt diapos bae, karna harusnyo dionih diluar void UpdatePosisi
   if (currentMillis - previousMillis >= 10) {
+    // Serial.print("|"); 
     posisi();
+    serialEvent();
     previousMillis = currentMillis;
   }
 }
+
+

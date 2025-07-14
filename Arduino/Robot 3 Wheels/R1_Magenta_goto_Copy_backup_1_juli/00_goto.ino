@@ -4,7 +4,6 @@
 // - speed           : kecepatan maksimum gerakan
 // - toleransiJarak  : jarak maksimum dianggap sudah sampai ke target (default = 1.5 satuan)
 // - toleransiSudut  : selisih heading maksimum dianggap sudah menghadap benar (default = 10 derajat)
-// core_go_to ini program go_to yang terbaru oleh noven ( masih beta perlu adjust lagi)
 
 void core_go_to(int sudut_hadap, int xxx, int yyy, int speed, float toleransiJarak = 1.5, int toleransiSudut = 10) {
   
